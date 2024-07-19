@@ -1,16 +1,20 @@
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
+import { verify } from 'argon2';
+import { Response } from 'express';
+import { UserService } from 'src/user/user.service';
 import {
   REFRESH_TOKEN,
   REFRESH_TOKEN_EXPIRATION_DAYS,
 } from './../constants/auth.constants';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { UserService } from 'src/user/user.service';
 import { AuthUserDto } from './dto/auth-user.dto';
-import { User } from '@prisma/client';
-import { verify } from 'argon2';
 import { IJwtPayload } from './types';
-import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -41,8 +45,9 @@ export class AuthService {
     if (!result) throw new UnauthorizedException('invalid refresh token');
 
     const user = await this.userService.findOne(result.id);
+    if (!user) throw new NotFoundException('user not found');
+
     const tokens = this.issueTokens({ id: user.id, email: user.email });
-    console.log(tokens);
 
     return tokens;
   }
