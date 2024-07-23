@@ -55,7 +55,10 @@ export class AuthService {
   private issueTokens(payload: IJwtPayload) {
     const accessToken = 'Bearer ' + this.jwtService.sign(payload);
     const refreshToken =
-      'Bearer ' + this.jwtService.sign(payload, { expiresIn: '7d' });
+      'Bearer ' +
+      this.jwtService.sign(payload, {
+        expiresIn: `${REFRESH_TOKEN_EXPIRATION_DAYS}d`,
+      });
 
     return { accessToken, refreshToken };
   }
