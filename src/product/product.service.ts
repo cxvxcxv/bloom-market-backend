@@ -2,10 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PaginationService } from 'src/pagination/pagination.service';
 import { PrismaService } from 'src/prisma/prisma.service';
-import {
-  returnFullProductObject,
-  returnProductObject,
-} from 'src/utils/return-product.object';
+import { returnProductObject } from 'src/utils/return-product.object';
 import {
   EnumProductSort,
   FindAllProductsDto,
@@ -56,6 +53,7 @@ export class ProductService {
       orderBy: prismaSort,
       skip,
       take: perPage,
+      select: returnProductObject,
     });
 
     return {
@@ -71,7 +69,7 @@ export class ProductService {
       where: {
         category: { id: categoryId },
       },
-      select: returnFullProductObject,
+      select: returnProductObject,
     });
 
     if (!products) throw new NotFoundException('products not found');

@@ -37,9 +37,9 @@ export class ReviewController {
     return this.reviewService.create(id, productId, createReviewDto);
   }
 
-  @Delete()
+  @Delete(':id')
   @Protect()
-  delete(@Body('id') id: string, @CurrentUser('id') userId: string) {
+  delete(@Param('id') id: string, @CurrentUser('id') userId: string) {
     return this.reviewService.deleteOwnReview(id, userId);
   }
 }

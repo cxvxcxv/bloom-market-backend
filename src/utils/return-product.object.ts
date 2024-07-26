@@ -10,10 +10,6 @@ export const returnProductObject: Prisma.ProductSelect = {
   name: true,
   description: true,
   price: true,
-};
-
-export const returnFullProductObject: Prisma.ProductSelect = {
-  ...returnProductObject,
   reviews: { select: returnReviewObject },
   category: { select: returnCategoryObject },
 };

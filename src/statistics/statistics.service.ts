@@ -1,18 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { UserService } from 'src/user/user.service';
+import { Injectable } from '@nestjs/common';
+import { IFullUser } from 'src/user/types';
 
 @Injectable()
 export class StatisticsService {
-  constructor(
-    private readonly prismaService: PrismaService,
-    private readonly userService: UserService,
-  ) {}
+  constructor() {}
 
-  async getMain(userId: string) {
-    const user = await this.userService.findOne(userId);
-    if (!user) throw new NotFoundException('user not found');
-
+  async getMain(user: IFullUser) {
     return [
       {
         name: 'orders',
