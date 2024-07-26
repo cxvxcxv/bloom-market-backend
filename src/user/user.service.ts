@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -53,16 +52,14 @@ export class UserService {
     });
   }
 
-  async update(paramId: string, userId: string, authUserDto: AuthUserDto) {
-    if (paramId !== userId) throw new ForbiddenException('no access');
-
+  async update(id: string, authUserDto: AuthUserDto) {
     const user = await this.findOne(authUserDto.email);
     if (user) throw new BadRequestException('user with such email exists');
 
     const hashedPassword = await hash(authUserDto.password);
 
     return await this.prismaService.user.update({
-      where: { id: userId },
+      where: { id },
       data: {
         email: authUserDto.email,
         password: hashedPassword,

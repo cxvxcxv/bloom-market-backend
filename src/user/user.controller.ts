@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Put,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, Put, ValidationPipe } from '@nestjs/common';
 import { Protect } from 'src/auth/decorators/auth.decorator';
 import { CurrentUser } from 'src/auth/decorators/user.decorator';
 import { AuthUserDto } from 'src/auth/dto/auth-user.dto';
@@ -24,10 +17,9 @@ export class UserController {
   @Put(':id')
   @Protect()
   update(
-    @Param('id') id: string,
-    @CurrentUser('id') userId: string,
+    @CurrentUser('id') id: string,
     @Body(ValidationPipe) authUserDto: AuthUserDto,
   ) {
-    return this.userService.update(id, userId, authUserDto);
+    return this.userService.update(id, authUserDto);
   }
 }
