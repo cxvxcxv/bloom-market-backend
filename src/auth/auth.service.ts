@@ -40,7 +40,6 @@ export class AuthService {
   }
 
   async refreshTokens(refreshToken: string) {
-    refreshToken = refreshToken.slice(7); //removing 'Bearer '
     const result = await this.jwtService.verifyAsync(refreshToken);
     if (!result) throw new UnauthorizedException('invalid refresh token');
 
@@ -64,6 +63,8 @@ export class AuthService {
   }
 
   addRefreshTokenToResponse(res: Response, refreshToken: string) {
+    refreshToken = refreshToken.slice(7);
+
     const expiresIn = new Date();
     expiresIn.setDate(expiresIn.getDate() + REFRESH_TOKEN_EXPIRATION_DAYS);
 

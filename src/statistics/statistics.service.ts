@@ -7,14 +7,8 @@ export class StatisticsService {
 
   async getMain(user: IFullUser) {
     return [
-      {
-        name: 'orders',
-        value: user.orders.length,
-      },
-      {
-        name: 'reviews',
-        value: user.reviews.length,
-      },
+      { name: 'orders', value: user.orders.length },
+      { name: 'reviews', value: user.reviews.length },
     ];
   }
 }
