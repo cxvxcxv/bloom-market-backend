@@ -4,8 +4,6 @@ import { returnReviewObject } from './return-review.object';
 
 export const returnProductObject: Prisma.ProductSelect = {
   id: true,
-  createdAt: true,
-  updatedAt: true,
   images: true,
   name: true,
   description: true,

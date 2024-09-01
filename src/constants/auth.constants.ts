@@ -1,2 +1,2 @@
 export const REFRESH_TOKEN = 'refreshToken';
-export const REFRESH_TOKEN_EXPIRATION_DAYS = 1;
+export const REFRESH_TOKEN_EXPIRATION_DAYS = 7;

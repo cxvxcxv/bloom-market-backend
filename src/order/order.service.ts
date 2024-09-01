@@ -12,7 +12,7 @@ export class OrderService {
       where: { userId },
       orderBy: { createdAt: 'desc' },
       include: {
-        items: { include: { product: { select: returnProductObject } } },
+        orderItems: { include: { product: { select: returnProductObject } } },
       },
     });
   }
@@ -26,7 +26,7 @@ export class OrderService {
       data: {
         status: createOrderDto.status,
         totalPrice,
-        items: { create: createOrderDto.items },
+        orderItems: { create: createOrderDto.items },
         user: { connect: { id: userId } },
       },
     });

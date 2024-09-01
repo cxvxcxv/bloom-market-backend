@@ -1,13 +1,10 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class OrderItemDto {
+export class CartItemDto {
   @IsOptional()
   @IsNumber()
   quantity?: number;
 
-  @IsNumber()
-  price: number;
-
-  @IsString() //better replace with IsUUID()
+  @IsString() //better replace with isUUID()
   productId: string;
 }
