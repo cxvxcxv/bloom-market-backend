@@ -1,17 +1,22 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { options } from './config/jwt.config';
+import { PassportModule } from '@nestjs/passport';
+import { CartModule } from 'src/cart/cart.module';
 import { UserModule } from 'src/user/user.module';
-import { STRATEGIES } from './strategies';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { options } from './config/jwt.config';
 import { GUARDS } from './guards';
+import { STRATEGIES } from './strategies';
 
 @Module({
-  imports: [PassportModule, JwtModule.registerAsync(options()), UserModule],
+  imports: [
+    PassportModule,
+    JwtModule.registerAsync(options()),
+    UserModule,
+    CartModule,
+  ],
   controllers: [AuthController],
   providers: [AuthService, ...STRATEGIES, ...GUARDS],
-  // exports: [AuthService],
 })
 export class AuthModule {}

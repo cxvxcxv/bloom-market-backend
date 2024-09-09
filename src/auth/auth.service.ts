@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { verify } from 'argon2';
 import { Response } from 'express';
+import { CartService } from 'src/cart/cart.service';
 import { UserService } from 'src/user/user.service';
 import {
   REFRESH_TOKEN,
@@ -20,6 +21,7 @@ import { IJwtPayload } from './types';
 export class AuthService {
   constructor(
     private readonly userService: UserService,
+    private readonly cartService: CartService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
@@ -28,6 +30,9 @@ export class AuthService {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...user } = await this.userService.create(authUserDto);
     const tokens = this.issueTokens(user);
+
+    await this.cartService.createCart(user.id);
+
     return { user, ...tokens };
   }
 

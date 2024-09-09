@@ -3,14 +3,15 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
+  Patch,
   Post,
   ValidationPipe,
 } from '@nestjs/common';
 import { Protect } from 'src/auth/decorators/auth.decorator';
 import { CurrentUser } from 'src/auth/decorators/user.decorator';
 import { CartService } from './cart.service';
-import { CartItemDto } from './dto/cart-item.dto';
-import { removeItemDto } from './dto/remove-item.dto';
+import { UpdateItemDto } from './dto/update-item.dto';
 
 @Controller('cart')
 export class CartController {
@@ -22,18 +23,35 @@ export class CartController {
     return await this.cartService.findProducts(userId);
   }
 
-  @Post()
+  @Post(':productId')
   @Protect()
   async addItem(
     @CurrentUser('id') userId: string,
-    @Body(ValidationPipe) cartItemDto: CartItemDto,
+    @Param('productId') productId: string,
   ) {
-    return await this.cartService.addItem(userId, cartItemDto);
+    return await this.cartService.addItem(userId, productId);
   }
 
-  @Delete()
+  @Patch(':cartItemId')
   @Protect()
-  async removeItem(@Body(ValidationPipe) removeItemDto: removeItemDto) {
-    return await this.cartService.removeItem(removeItemDto);
+  async updateItemQuantity(
+    @CurrentUser('id') userId: string,
+    @Param('cartItemId') cartItemId: string,
+    @Body(ValidationPipe) updateItemDto: UpdateItemDto,
+  ) {
+    return await this.cartService.updateItemQuantity(
+      userId,
+      cartItemId,
+      updateItemDto,
+    );
+  }
+
+  @Delete(':cartItemId')
+  @Protect()
+  async removeItem(
+    @CurrentUser('id') userId: string,
+    @Param('cartItemId') cartItemId: string,
+  ) {
+    return await this.cartService.deleteItem(userId, cartItemId);
   }
 }
